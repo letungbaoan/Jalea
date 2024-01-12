@@ -23,15 +23,15 @@ config()
 const endpoint = process.env.AZURE_OPENAI_ENDPOINT
 const azureApiKey = process.env.AZURE_OPENAI_KEY
 
-// export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
-// 	const user = req.user as User
-// 	const user_id = user._id as ObjectId
-// 	const result = await usersService.login(user_id.toString())
-// 	return res.status(200).json({
-// 		message: USERS_MESSAGES.LOGIN_SUCCESS,
-// 		result
-// 	})
-// }
+export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
+	const user = req.user as User
+	const user_id = user._id as ObjectId
+	const result = await usersService.login(user_id.toString())
+	return res.status(200).json({
+		message: USERS_MESSAGES.LOGIN_SUCCESS,
+		result
+	})
+}
 
 export const registerController = async (
 	req: Request<ParamsDictionary, any, registerReqBody>,
@@ -45,11 +45,11 @@ export const registerController = async (
 	})
 }
 
-// export const logoutController = async (req: Request<ParamsDictionary, any, LogoutReqBody>, res: Response) => {
-// 	const { refresh_token } = req.body
-// 	const result = await usersService.logout(refresh_token)
-// 	return res.json(result)
-// }
+export const logoutController = async (req: Request<ParamsDictionary, any, LogoutReqBody>, res: Response) => {
+	const { refresh_token } = req.body
+	const result = await usersService.logout(refresh_token)
+	return res.json(result)
+}
 
 // export const forgotPasswordController = async (
 // 	req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
@@ -79,12 +79,61 @@ export const registerController = async (
 // 	return res.json(result)
 // }
 
+// export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQuizReqBody>, res: Response) => {
+// 	const { number_of_quiz, level, type_of_quiz } = req.query
+// 	const messages: ChatRequestMessage[] = [
+// 		{
+// 			role: 'user',
+// 			content: `Give me ${number_of_quiz} multiple choice quiz of japanese ${type_of_quiz} at JLPT ${level} level for japanese learner, don't add translation, furigana for word in the choices, and tell me which choice is right`
+// 		}
+// 	]
+// 	console.log(messages)
+
+// 	console.log('== Chat Completions Sample ==')
+
+// 	const client = new OpenAIClient(endpoint as string, new AzureKeyCredential(azureApiKey as string))
+// 	const deploymentId = 'GPT35TURBO16K'
+// 	const result = await client.getChatCompletions(deploymentId, messages)
+
+// 	const choicesArray = result.choices.map((choice) => ({ text: choice.message }))
+// 	console.log(choicesArray)
+// 	return res.status(200).json({
+// 		message: USERS_MESSAGES.GET_COMPLETIONS_SUCCESS,
+// 		choices: choicesArray
+// 	})
+// }
+
 export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQuizReqBody>, res: Response) => {
 	const { number_of_quiz, level, type_of_quiz } = req.query
 	const messages: ChatRequestMessage[] = [
 		{
 			role: 'user',
-			content: `Give me ${number_of_quiz} multiple choice quiz of japanese ${type_of_quiz} at JLPT ${level} level for japanese learner, don't add translation, furigana for word in the choices, and tell me which choice is right`
+			content: `    
+          Please create a list of ${number_of_quiz} ${level}-level Japanese ${type_of_quiz} multiple-choice questions in the following JSON format within the same file:
+          [
+            {
+              "question": "Question 1?",
+              "choices": {
+                "choice_1": "Option 1",
+                "choice_2": "Option 2",
+                "choice_3": "Option 3",
+                "choice_4": "Option 4"
+              },
+              "answer": X
+            },
+            {
+              "question": "Question 2?",
+              "choices": {
+                "choice_1": "Option 1",
+                "choice_2": "Option 2",
+                "choice_3": "Option 3",
+                "choice_4": "Option 4"
+              },
+              "answer": X
+            },
+            ...
+          ]
+        `
 		}
 	]
 	console.log(messages)
@@ -94,12 +143,13 @@ export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQ
 	const client = new OpenAIClient(endpoint as string, new AzureKeyCredential(azureApiKey as string))
 	const deploymentId = 'GPT35TURBO16K'
 	const result = await client.getChatCompletions(deploymentId, messages)
+	const str = result.choices![0]!.message!.content
 
-	const choicesArray = result.choices.map((choice) => ({ text: choice.message }))
-	console.log(choicesArray)
+	const obj = JSON.parse(str as string)
+	console.log(obj)
 	return res.status(200).json({
 		message: USERS_MESSAGES.GET_COMPLETIONS_SUCCESS,
-		choices: choicesArray
+		result: obj
 	})
 }
 

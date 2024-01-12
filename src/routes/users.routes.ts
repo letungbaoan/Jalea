@@ -1,24 +1,35 @@
 import { Router } from 'express'
-import { explainSentenceController, quizController, registerController } from '~/controllers/users.controllers'
+import {
+	explainSentenceController,
+	loginController,
+	logoutController,
+	quizController,
+	registerController
+} from '~/controllers/users.controllers'
 import { wrapResquestHandler } from '../utils/handlers'
-import { registerValidator } from '../middlewares/users.middlewares'
+import {
+	accessTokenValidator,
+	loginValidator,
+	refreshTokenValidator,
+	registerValidator
+} from '../middlewares/users.middlewares'
 const usersRouter = Router()
 
 usersRouter.post('/register', registerValidator, wrapResquestHandler(registerController))
 
-// /**
-//  * Path: /login
-//  * Method: GET
-//  * Body: { email: string, password: string }
-//  */
-// usersRouter.post('/login', loginValidator, wrapResquestHandler(loginController))
+/**
+ * Path: /login
+ * Method: GET
+ * Body: { email: string, password: string }
+ */
+usersRouter.post('/login', loginValidator, wrapResquestHandler(loginController))
 
-// /**
-//  * Path: /logout
-//  * Method: POST
-//  * Body: { refresh_token: string }
-//  */
-// usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapResquestHandler(logoutController))
+/**
+ * Path: /logout
+ * Method: POST
+ * Body: { refresh_token: string }
+ */
+usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapResquestHandler(logoutController))
 
 // /**
 //  * Path: /forgot-password
