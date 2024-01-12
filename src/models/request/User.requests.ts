@@ -49,5 +49,5 @@ export interface ExplainSentenceReqBody {
 export interface GiveMeQuizReqBody {
 	number_of_quiz: string
 	level: string
-	type: string
+	type_of_quiz: string
 }

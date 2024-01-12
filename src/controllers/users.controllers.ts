@@ -38,7 +38,6 @@ export const registerController = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	console.log(req.body)
 	const result = await usersService.register(req.body)
 	return res.status(200).json({
 		message: USERS_MESSAGES.REGISTER_SUCCESS,
@@ -81,11 +80,11 @@ export const registerController = async (
 // }
 
 export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQuizReqBody>, res: Response) => {
-	const { number_of_quiz, level, type } = req.body
+	const { number_of_quiz, level, type_of_quiz } = req.query
 	const messages: ChatRequestMessage[] = [
 		{
 			role: 'user',
-			content: `Give me ${number_of_quiz} multiple choice quiz of japanese ${type} at JLPT ${level} level for japanese learner, don't add translation, furigana for word in the choices, and tell me which choice is right`
+			content: `Give me ${number_of_quiz} multiple choice quiz of japanese ${type_of_quiz} at JLPT ${level} level for japanese learner, don't add translation, furigana for word in the choices, and tell me which choice is right`
 		}
 	]
 	console.log(messages)
@@ -97,7 +96,7 @@ export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQ
 	const result = await client.getChatCompletions(deploymentId, messages)
 
 	const choicesArray = result.choices.map((choice) => ({ text: choice.message }))
-
+	console.log(choicesArray)
 	return res.status(200).json({
 		message: USERS_MESSAGES.GET_COMPLETIONS_SUCCESS,
 		choices: choicesArray
@@ -108,7 +107,7 @@ export const explainSentenceController = async (
 	req: Request<ParamsDictionary, any, ExplainSentenceReqBody>,
 	res: Response
 ) => {
-	const { sentence } = req.body
+	const { sentence } = req.query
 	const messages: ChatRequestMessage[] = [
 		{
 			role: 'user',
