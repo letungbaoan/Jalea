@@ -1,0 +1,287 @@
+html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+}
+  
+ol, ul {
+    list-style: none;
+}
+
+.container-fluid {
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    padding: 32px 0 30px 16px;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+
+.nav-bar {
+    height: 100%;
+    border-right: solid 1px var(--text-color);
+    padding: 0 16px;
+}
+
+.nav-item {
+    height: 50px;
+    width: 220px;
+    margin: 10px 0;
+}
+
+.nav-item:first-child {
+    margin-top: 0;
+}
+
+.nav-item:last-child {
+    margin-bottom: 0;
+}
+
+.nav-link {
+    height: 100%;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 700;
+    color: #777777;
+}
+
+.nav-link span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-link:hover {
+    color: #777777;
+    background-color: #f7f7f7;
+}
+
+.func__icon {
+    margin-right: 15px;
+}
+
+
+
+.nav-pills .nav-link.active{
+    color: var(--primary-color);
+    background-color: #ffa8ac;
+    border: solid 1px var(--primary-color);
+    transition: ease;
+}
+
+.tab-content {
+    width: 100%;
+}
+
+/* Function 1 */
+#func1 {
+    margin: 50px auto;
+    text-align: center;
+}
+
+#func1 h1 {
+    margin-bottom: 20px;
+    font-size: 40px;
+    color: var(--primary-color);
+}
+
+.form_quiz {
+    margin: 0 auto;
+    width: 70%;
+    padding-left: 40px;
+}
+
+  
+label { 
+    display: block;
+    margin-bottom: 10px;
+    font-size: 25px;
+}
+
+.level {
+    margin-left: 173px;
+}
+
+.type_of_quiz {
+    margin-left: 95px;
+}
+
+
+.quiz__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+  
+input[type="number"] {
+    width: 60%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="radio"] {
+    margin: 0 2px 0 24px;
+    accent-color: var(--primary-color);
+}
+  
+#submitBtn {
+    padding: 10px 20px;
+    background-color:var(--primary-color);
+    font-size: 17;
+    border-radius: 3px;
+    border-color: #ea151e;
+    color: aliceblue;
+    margin-right: 45px;
+    margin-top: 15px;
+}
+  
+#result {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Funtion 2 */
+#func2 {
+    position: relative;
+    width: 100%;
+    height: 95%;
+}
+
+#chatbox {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    margin-top: 20px;
+}
+
+#userInput {
+    margin-left: 645px;
+    width: 500px;
+    margin-top: 60px;
+    border: solid 1px var(--text-color);
+    border-radius: 25px;
+    display: flex;
+    overflow: hidden;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+}
+
+#userInput:focus-within{
+    border: solid 2px var(--primary-color);
+}
+
+.textarea_container {
+    width: 85%;
+}
+
+.textarea_container i {
+    font-size: 14px;
+}
+
+#textInput {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    position: relative;
+    background-color: transparent;
+    line-height: 17.5px;
+    padding: 0;
+    max-height: 100px;
+    overflow-x: hidden;
+    text-rendering: auto;
+    resize: none;
+    overflow: auto;
+}
+
+#textInput[placeholder="Sentence"] {
+    top: 50%;
+    transform: translateY(30%);
+}
+
+#buttonInput {
+    padding: 3px;
+    font-family: monospace;
+    font-size: 17px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#buttonInput:hover {
+    opacity: 0.8;
+}
+
+#buttonInput i {
+    font-size: 15px;
+    color: white;
+}
+
+.userText_container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.userText {
+    color: white;
+    font-family: monospace;
+    font-size: 17px;
+    line-height: 30px;
+    margin: 5px 0;
+    max-width: 435px;
+    min-height: 40px;
+    word-wrap: break-word;
+    border-radius: 10px;
+    background-color: #1cb0f6;
+    padding: 10px;
+}
+
+.userText p {
+    margin: 10px;
+}
+
+
+.botText_container {
+    margin-left: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.botText {
+    color: white;
+    font-family: monospace;
+    font-size: 17px;
+    text-align: left;
+    line-height: 30px;
+    margin: 5px 0;
+    min-height: 40px;
+    max-width: 435px;
+    word-wrap: break-word;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+
+#tidbit {
+    position:absolute;
+    bottom:0;
+    right:0;
+    width: 300px;
+}

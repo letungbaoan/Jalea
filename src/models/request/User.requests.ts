@@ -42,6 +42,12 @@ export interface ResetPasswordReqBody {
 	confirm_password: string
 }
 
-export interface ExplainSentenceReqBody {}
+export interface ExplainSentenceReqBody {
+	sentence: string
+}
 
-export interface GiveMeQuizReqBody {}
+export interface GiveMeQuizReqBody {
+	number_of_quiz: string
+	level: string
+	type: string
+}
