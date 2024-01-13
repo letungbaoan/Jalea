@@ -1,7 +1,4 @@
-import exp from 'constants'
-import { ExpressValidator } from 'express-validator'
 import { JwtPayload } from 'jsonwebtoken'
-import { ObjectId } from 'mongodb'
 import { TokenType } from '~/constants/enums'
 
 export interface registerReqBody {

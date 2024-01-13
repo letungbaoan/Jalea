@@ -1,4 +1,10 @@
 :root {
     --text-color: #afafaf;
     --primary-color:#ff000b;
+    --primary-line-color: #ffa8ac;
+    --chat-color:white;
+}
+
+.disabledBtn {
+    opacity: 0.3;
 }

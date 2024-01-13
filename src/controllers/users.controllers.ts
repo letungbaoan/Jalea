@@ -26,10 +26,11 @@ const azureApiKey = process.env.AZURE_OPENAI_KEY
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
 	const user = req.user as User
 	const user_id = user._id as ObjectId
-	const result = await usersService.login(user_id.toString())
+	const { access_token, refresh_token } = await usersService.login(user_id.toString())
+	res.cookie('access_token', access_token, { httpOnly: true, secure: true })
+	res.cookie('refresh_token', refresh_token, { httpOnly: true, secure: true })
 	return res.status(200).json({
-		message: USERS_MESSAGES.LOGIN_SUCCESS,
-		result
+		message: USERS_MESSAGES.LOGIN_SUCCESS
 	})
 }
 

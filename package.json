@@ -33,8 +33,10 @@
 	},
 	"dependencies": {
 		"@azure/openai": "^1.0.0-beta.10",
+		"@types/cookie-parser": "^1.4.6",
 		"@types/jsonwebtoken": "^9.0.5",
 		"@types/lodash": "^4.14.202",
+		"cookie-parser": "^1.4.6",
 		"dotenv": "^16.3.1",
 		"express": "^4.18.2",
 		"express-validator": "^7.0.1",

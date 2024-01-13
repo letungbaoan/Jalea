@@ -15,11 +15,16 @@ import {
 } from '../middlewares/users.middlewares'
 const usersRouter = Router()
 
+/**
+ * Path: /register
+ * Method: POST
+ * Body: { email: string, password: string }
+ */
 usersRouter.post('/register', registerValidator, wrapResquestHandler(registerController))
 
 /**
  * Path: /login
- * Method: GET
+ * Method: POST
  * Body: { email: string, password: string }
  */
 usersRouter.post('/login', loginValidator, wrapResquestHandler(loginController))
@@ -56,7 +61,7 @@ usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRes
 //  */
 // usersRouter.post('/reset-password', resetPasswordValidator, wrapResquestHandler(resetPasswordController))
 
-usersRouter.get('/quiz', wrapResquestHandler(quizController))
-usersRouter.get('/explainSentence', wrapResquestHandler(explainSentenceController))
+usersRouter.get('/quiz', accessTokenValidator, wrapResquestHandler(quizController))
+usersRouter.get('/explainSentence', accessTokenValidator, wrapResquestHandler(explainSentenceController))
 
 export default usersRouter

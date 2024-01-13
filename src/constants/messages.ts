@@ -30,7 +30,6 @@ export const USERS_MESSAGES = {
 	REFRESH_TOKEN_IS_INVALID: 'Refresh token is invalid',
 	REFRESH_TOKEN_IS_USED_OR_NOT_EXIST: 'Refresh token is used or not exist',
 	LOGOUT_SUCCESS: 'Logout success',
-	EMAIL_VERIFY_TOKEN_IS_REQUIRED: 'Email verify token is required',
 	USER_NOT_FOUND: 'User not found',
 	EMAIL_ALREADY_VERIFIED: 'Email already verified',
 	EMAIL_VERIFY_SUCCESSED: 'Email verify successed',
@@ -47,5 +46,6 @@ export const USERS_MESSAGES = {
 	USERNAME_IS_REQUIRED: 'Username is required',
 	USERNAME_MUST_BE_A_STRING: 'Username must be a string',
 	USERNAME_ALREADY_USED: 'Username already used',
-	GET_COMPLETIONS_SUCCESS: 'Get completions success'
+	GET_COMPLETIONS_SUCCESS: 'Get completions success',
+	PLEASE_LOGIN_TO_USE_THIS: 'Please login to use this'
 } as const

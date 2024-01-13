@@ -1,5 +1,5 @@
 import { ErrorWithStatus } from 'src/models/Errors'
-import { Request, Response, NextFunction } from 'express'
+import { Request } from 'express'
 import { body, checkSchema } from 'express-validator'
 import usersService from '~/services/users.services'
 import { validate } from '~/utils/validation'
@@ -9,9 +9,6 @@ import { hashPassword } from '~/utils/crypto'
 import { verifyToken } from '~/utils/jwt'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { JsonWebTokenError } from 'jsonwebtoken'
-import { capitalize } from 'lodash'
-import { TokenPayLoad } from '~/models/request/User.requests'
-import { ObjectId } from 'mongodb'
 import { REGEX_USERNAME } from '~/constants/regex'
 
 export const loginValidator = validate(
@@ -215,10 +212,10 @@ export const accessTokenValidator = validate(
 				trim: true,
 				custom: {
 					options: async (value: string, { req }) => {
-						const access_token = (value || '').split(' ')[1]
+						const access_token = req.cookies?.['access_token']
 						if (!access_token) {
 							throw new ErrorWithStatus({
-								message: USERS_MESSAGES.ACCESS_TOKEN_IS_REQUIRED,
+								message: USERS_MESSAGES.PLEASE_LOGIN_TO_USE_THIS,
 								status: HTTP_STATUS.UNAUTHORIZED
 							})
 						}
@@ -230,7 +227,7 @@ export const accessTokenValidator = validate(
 							;(req as Request).decoded_authorization = decoded_authorization
 						} catch (error) {
 							throw new ErrorWithStatus({
-								message: capitalize((error as JsonWebTokenError).message),
+								message: USERS_MESSAGES.PLEASE_LOGIN_TO_USE_THIS,
 								status: HTTP_STATUS.UNAUTHORIZED
 							})
 						}
@@ -250,23 +247,24 @@ export const refreshTokenValidator = validate(
 				trim: true,
 				custom: {
 					options: async (value: string, { req }) => {
-						if (!value) {
+						const refresh_token = req.cookies?.['refresh_token']
+						if (!refresh_token) {
 							throw new ErrorWithStatus({
-								message: USERS_MESSAGES.REFRESH_TOKEN_IS_REQUIRED,
+								message: USERS_MESSAGES.PLEASE_LOGIN_TO_USE_THIS,
 								status: HTTP_STATUS.UNAUTHORIZED
 							})
 						}
 						try {
-							const [decoded_refresh_token, refresh_token] = await Promise.all([
+							const [decoded_refresh_token, returned_refresh_token] = await Promise.all([
 								verifyToken({
-									token: value,
+									token: refresh_token,
 									secretOnPublicKey: process.env.JWT_SECRET_REFRESH_TOKEN as string
 								}),
-								databaseService.refreshTokens.findOne({ token: value })
+								databaseService.refreshTokens.findOne({ token: refresh_token })
 							])
-							if (refresh_token === null) {
+							if (returned_refresh_token === null) {
 								throw new ErrorWithStatus({
-									message: USERS_MESSAGES.REFRESH_TOKEN_IS_USED_OR_NOT_EXIST,
+									message: USERS_MESSAGES.PLEASE_LOGIN_TO_USE_THIS,
 									status: HTTP_STATUS.UNAUTHORIZED
 								})
 							}
@@ -274,7 +272,7 @@ export const refreshTokenValidator = validate(
 						} catch (error) {
 							if (error instanceof JsonWebTokenError) {
 								throw new ErrorWithStatus({
-									message: capitalize(error.message),
+									message: USERS_MESSAGES.PLEASE_LOGIN_TO_USE_THIS,
 									status: HTTP_STATUS.UNAUTHORIZED
 								})
 							}
