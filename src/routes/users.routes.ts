@@ -10,6 +10,7 @@ import { wrapResquestHandler } from '../utils/handlers'
 import {
 	accessTokenValidator,
 	loginValidator,
+	quizReqValidator,
 	refreshTokenValidator,
 	registerValidator
 } from '../middlewares/users.middlewares'
@@ -18,7 +19,7 @@ const usersRouter = Router()
 /**
  * Path: /register
  * Method: POST
- * Body: { email: string, password: string }
+ * Body: { email: string, password: string, confirmPassword: string, username: string, name: string }
  */
 usersRouter.post('/register', registerValidator, wrapResquestHandler(registerController))
 
@@ -32,36 +33,24 @@ usersRouter.post('/login', loginValidator, wrapResquestHandler(loginController))
 /**
  * Path: /logout
  * Method: POST
- * Body: { refresh_token: string }
+ * Cookie: { access_token: string, refresh_token: string }
  */
 usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapResquestHandler(logoutController))
 
-// /**
-//  * Path: /forgot-password
-//  * Method: POST
-//  * Body: { email: string }
-//  */
-// usersRouter.post('/forgot-password', forgotPasswordValidator, wrapResquestHandler(forgotPasswordController))
+/**
+ * Path: /quiz
+ * Method: GET
+ * Cookie: { access_token: string }
+ * Body: { type_of_quiz: string, level: string, number_of_quiz: string }
+ */
+usersRouter.get('/quiz', accessTokenValidator, quizReqValidator, wrapResquestHandler(quizController))
 
-// /**
-//  * Path: /verify-forgot-password
-//  * Method: POST
-//  * Body: { forgot_password_token }
-//  */
-// usersRouter.post(
-// 	'/verify-forgot-password',
-// 	verifyForgotPasswordTokenValidator,
-// 	wrapResquestHandler(verifyForgotPasswordTokenController)
-// )
-
-// /**
-//  * Path: /reset-password
-//  * Method: POST
-//  * Body: { forgot_password_token: string, password: string, confirm_password: string }
-//  */
-// usersRouter.post('/reset-password', resetPasswordValidator, wrapResquestHandler(resetPasswordController))
-
-usersRouter.get('/quiz', accessTokenValidator, wrapResquestHandler(quizController))
+/**
+ * Path: /explainSentence
+ * Method: GET
+ * Cookie: { access_token: string }
+ * Body: { sentence: string }
+ */
 usersRouter.get('/explainSentence', accessTokenValidator, wrapResquestHandler(explainSentenceController))
 
 export default usersRouter

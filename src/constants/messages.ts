@@ -47,5 +47,11 @@ export const USERS_MESSAGES = {
 	USERNAME_MUST_BE_A_STRING: 'Username must be a string',
 	USERNAME_ALREADY_USED: 'Username already used',
 	GET_COMPLETIONS_SUCCESS: 'Get completions success',
-	PLEASE_LOGIN_TO_USE_THIS: 'Please login to use this'
+	PLEASE_LOGIN_TO_USE_THIS: 'Please login to use this',
+	TYPE_OF_QUIZ_IS_REQUIRED: 'Type of quiz is required',
+	TYPE_OF_QUIZ_MUST_BE_A_STRING: 'Type of quiz must be a string',
+	LEVEL_IS_REQUIRED: 'Level is required',
+	LEVEL_MUST_BE_A_STRING: 'Level must be a string',
+	NUMBER_OF_QUIZ_IS_REQUIRED: 'Number of quiz is required',
+	NUMBER_OF_QUIZ_MUST_BE_A_STRING: 'Number of quiz must be a string'
 } as const

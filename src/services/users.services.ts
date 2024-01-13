@@ -8,9 +8,8 @@ import { ObjectId } from 'mongodb'
 import { config } from 'dotenv'
 import { USERS_MESSAGES } from '~/constants/messages'
 import { verify } from 'crypto'
-import { ErrorWithStatus } from '~/models/Errors'
 import { TokenType } from '~/constants/enums'
-import HTTP_STATUS from '~/constants/httpStatus'
+
 config()
 class UsersService {
 	private signAccessToken(user_id: string) {

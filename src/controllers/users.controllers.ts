@@ -4,15 +4,10 @@ import { ParamsDictionary } from 'express-serve-static-core'
 import usersService from '~/services/users.services'
 import {
 	ExplainSentenceReqBody,
-	ForgotPasswordReqBody,
 	GiveMeQuizReqBody,
 	LoginReqBody,
 	LogoutReqBody,
-	RefreshTokenReqBody,
-	ResetPasswordReqBody,
-	TokenPayLoad,
-	registerReqBody,
-	verifyForgotPasswordTokenReqBody
+	registerReqBody
 } from '~/models/request/User.requests'
 import { ObjectId } from 'mongodb'
 import { USERS_MESSAGES } from '~/constants/messages'
@@ -39,10 +34,11 @@ export const registerController = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const result = await usersService.register(req.body)
+	const { access_token, refresh_token } = await usersService.register(req.body)
+	res.cookie('access_token', access_token, { httpOnly: true, secure: true })
+	res.cookie('refresh_token', refresh_token, { httpOnly: true, secure: true })
 	return res.status(200).json({
-		message: USERS_MESSAGES.REGISTER_SUCCESS,
-		result
+		message: USERS_MESSAGES.REGISTER_SUCCESS
 	})
 }
 
@@ -52,59 +48,7 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
 	return res.json(result)
 }
 
-// export const forgotPasswordController = async (
-// 	req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
-// 	res: Response
-// ) => {
-// 	const { _id } = req.user as User
-// 	const result = await usersService.forgotPassword((_id as ObjectId).toString())
-// 	return res.json(result)
-// }
-
-// export const verifyForgotPasswordTokenController = async (
-// 	req: Request<ParamsDictionary, any, verifyForgotPasswordTokenReqBody>,
-// 	res: Response
-// ) => {
-// 	return res.json({
-// 		message: USERS_MESSAGES.VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS
-// 	})
-// }
-
-// export const resetPasswordController = async (
-// 	req: Request<ParamsDictionary, any, ResetPasswordReqBody>,
-// 	res: Response
-// ) => {
-// 	const { user_id } = req.decoded_forgot_password_token as TokenPayLoad
-// 	const { password } = req.body
-// 	const result = await usersService.resetPassword(user_id, password)
-// 	return res.json(result)
-// }
-
-// export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQuizReqBody>, res: Response) => {
-// 	const { number_of_quiz, level, type_of_quiz } = req.query
-// 	const messages: ChatRequestMessage[] = [
-// 		{
-// 			role: 'user',
-// 			content: `Give me ${number_of_quiz} multiple choice quiz of japanese ${type_of_quiz} at JLPT ${level} level for japanese learner, don't add translation, furigana for word in the choices, and tell me which choice is right`
-// 		}
-// 	]
-// 	console.log(messages)
-
-// 	console.log('== Chat Completions Sample ==')
-
-// 	const client = new OpenAIClient(endpoint as string, new AzureKeyCredential(azureApiKey as string))
-// 	const deploymentId = 'GPT35TURBO16K'
-// 	const result = await client.getChatCompletions(deploymentId, messages)
-
-// 	const choicesArray = result.choices.map((choice) => ({ text: choice.message }))
-// 	console.log(choicesArray)
-// 	return res.status(200).json({
-// 		message: USERS_MESSAGES.GET_COMPLETIONS_SUCCESS,
-// 		choices: choicesArray
-// 	})
-// }
-
-export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQuizReqBody>, res: Response) => {
+export const quizController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
 	const { number_of_quiz, level, type_of_quiz } = req.query
 	const messages: ChatRequestMessage[] = [
 		{
@@ -154,29 +98,66 @@ export const quizController = async (req: Request<ParamsDictionary, any, GiveMeQ
 	})
 }
 
-export const explainSentenceController = async (
-	req: Request<ParamsDictionary, any, ExplainSentenceReqBody>,
-	res: Response
-) => {
+export const explainSentenceController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
 	const { sentence } = req.query
 	const messages: ChatRequestMessage[] = [
 		{
 			role: 'user',
-			content: `Given this sentence :"${sentence}", tell me which part is subject, predicate
-      , and in them what is noun, verb, adj. More than that, explain the grammar used in that sentence and tell the different of use case between them versus other quite similar grammar`
+			content: `
+        Perform an in-depth analysis of a given Japanese sentence '${sentence}', and present the findings in a well-organized JSON format with the following detailed structure:
+    
+        {
+          "structure": {
+            "topic": "",
+            "action_or_characteristic": "",
+            "clauses": ""
+          },
+          "grammar": {
+            "used": "",
+            "meaning": "",
+            "examples": "",
+            "comparison": ""
+          },
+          "analysis": {
+            "choice_reason": "",
+            "context_and_usage": "",
+            "comparison_with_other_cases": ""
+          }
+        }
+        Explanation:
+          Structure:
+  
+            Topic: Identify the main subject or theme of the sentence. This helps establish the primary focus.
+            Action or Characteristic: Describe the primary action or characteristic conveyed by the sentence.
+            Clauses: Analyze the sentence's main and subordinate clauses to understand its syntactic structure.
+          Grammar:
+  
+            Used: Specify the key grammar structure employed in the sentence, such as a specific particle or tense.
+            Meaning: Describe the intended meaning of the identified grammar structure in the context of the sentence.
+            Examples: Provide illustrative examples showcasing how the grammar is applied in the sentence.
+            Comparison: Compare the identified grammar with at least one similar structure, highlighting differences in meaning.
+          Analysis:
+  
+            Choice Reason: Pose questions to explore the rationale behind choosing the specific grammar structure. Consider factors like nuance or emphasis.
+            Context and Usage: Investigate the communicative context and usage situations in which the grammar is employed. This helps understand pragmatic choices.
+            Comparison with Other Cases: Compare the usage of the identified grammar with other instances to suggest variations in its application, considering diverse contexts.
+           
+            This enhanced prompt aims to provide more detailed guidance for the analysis of a Japanese sentence. Feel free to use this version for more specific and nuanced results.                `
 		}
 	]
+	console.log(messages)
+	console.log('== Chat Completions Sample ==')
 
 	const client = new OpenAIClient(endpoint as string, new AzureKeyCredential(azureApiKey as string))
 	const deploymentId = 'GPT35TURBO16K'
 	const result = await client.getChatCompletions(deploymentId, messages)
 
-	for (const choice of result.choices) {
-		console.log(choice.message)
-	}
+	const str = result.choices![0]!.message!.content
+	const obj = JSON.parse(str as string)
+	console.log(obj)
 
 	return res.status(200).json({
 		message: USERS_MESSAGES.GET_COMPLETIONS_SUCCESS,
-		result
+		result: obj
 	})
 }

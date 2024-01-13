@@ -1,6 +1,6 @@
 import { ErrorWithStatus } from 'src/models/Errors'
 import { Request } from 'express'
-import { body, checkSchema } from 'express-validator'
+import { checkSchema } from 'express-validator'
 import usersService from '~/services/users.services'
 import { validate } from '~/utils/validation'
 import { USERS_MESSAGES } from '~/constants/messages'
@@ -287,208 +287,56 @@ export const refreshTokenValidator = validate(
 	)
 )
 
-// export const forgotPasswordValidator = validate(
-// 	checkSchema(
-// 		{
-// 			email: {
-// 				notEmpty: {
-// 					errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED
-// 				},
-// 				isString: {
-// 					errorMessage: USERS_MESSAGES.EMAIL_MUST_BE_A_STRING
-// 				},
-// 				isLength: {
-// 					options: {
-// 						min: 8,
-// 						max: 50
-// 					},
-// 					errorMessage: USERS_MESSAGES.EMAIL_LENGTH_MUST_BE_FROM_8_TO_50
-// 				},
-// 				trim: true,
-// 				isEmail: {
-// 					errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID
-// 				},
-// 				custom: {
-// 					options: async (value, { req }) => {
-// 						const user = await databaseService.users.findOne({
-// 							email: value
-// 						})
-// 						if (user === null) {
-// 							throw new Error(USERS_MESSAGES.USER_NOT_FOUND)
-// 						}
-// 						req.user = user
-// 						return true
-// 					}
-// 				}
-// 			}
-// 		},
-// 		['body']
-// 	)
-// )
+export const quizReqValidator = validate(
+	checkSchema(
+		{
+			type_of_quiz: {
+				notEmpty: {
+					errorMessage: USERS_MESSAGES.TYPE_OF_QUIZ_IS_REQUIRED
+				},
+				isString: {
+					errorMessage: USERS_MESSAGES.TYPE_OF_QUIZ_MUST_BE_A_STRING
+				},
+				trim: true,
+				isIn: {
+					options: [['Noun', 'Adj', 'Verb', 'Grammar', 'Reading']],
+					errorMessage: 'Level must be one of: Noun, Adj, Verb, Grammar, Reading'
+				}
+			},
+			number_of_quiz: {
+				notEmpty: {
+					errorMessage: USERS_MESSAGES.NUMBER_OF_QUIZ_IS_REQUIRED
+				},
+				isString: {
+					errorMessage: USERS_MESSAGES.NUMBER_OF_QUIZ_MUST_BE_A_STRING
+				},
+				trim: true,
+				custom: {
+					options: async (value, { req }) => {
+						const isNonNegative = parseInt(value, 10) >= 0
 
-// export const verifyForgotPasswordTokenValidator = validate(
-// 	checkSchema(
-// 		{
-// 			forgot_password_token: {
-// 				trim: true,
-// 				custom: {
-// 					options: async (value, { req }) => {
-// 						console.log(req.body)
-// 						if (!value) {
-// 							throw new ErrorWithStatus({
-// 								message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_REQUIRED,
-// 								status: HTTP_STATUS.UNAUTHORIZED
-// 							})
-// 						}
-// 						try {
-// 							const decoded_forgot_password_token = await verifyToken({
-// 								token: value,
-// 								secretOnPublicKey: process.env.JWT_SECRET_FORGOT_PASSWORD_TOKEN as string
-// 							})
-// 							const { user_id } = decoded_forgot_password_token
-// 							const user = await databaseService.users.findOne({
-// 								_id: new ObjectId(user_id)
-// 							})
-// 							if (user === null) {
-// 								throw new ErrorWithStatus({
-// 									message: USERS_MESSAGES.USER_NOT_FOUND,
-// 									status: HTTP_STATUS.UNAUTHORIZED
-// 								})
-// 							}
-// 							if (user.forgot_password_token !== value) {
-// 								throw new ErrorWithStatus({
-// 									message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_INVALID,
-// 									status: HTTP_STATUS.UNAUTHORIZED
-// 								})
-// 							}
-// 							;(req as Request).decoded_forgot_password_token = decoded_forgot_password_token
-// 						} catch (error) {
-// 							if (error instanceof JsonWebTokenError) {
-// 								throw new ErrorWithStatus({
-// 									message: capitalize(error.message),
-// 									status: HTTP_STATUS.UNAUTHORIZED
-// 								})
-// 							}
-// 							throw error
-// 						}
-// 						return true
-// 					}
-// 				}
-// 			}
-// 		},
-// 		['body']
-// 	)
-// )
+						if (!isNonNegative) {
+							throw new Error('Number of quiz must be positive')
+						}
 
-// export const resetPasswordValidator = validate(
-// 	checkSchema(
-// 		{
-// 			forgot_password_token: {
-// 				trim: true,
-// 				custom: {
-// 					options: async (value, { req }) => {
-// 						console.log(req.body)
-// 						if (!value) {
-// 							throw new ErrorWithStatus({
-// 								message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_REQUIRED,
-// 								status: HTTP_STATUS.UNAUTHORIZED
-// 							})
-// 						}
-// 						try {
-// 							const decoded_forgot_password_token = await verifyToken({
-// 								token: value,
-// 								secretOnPublicKey: process.env.JWT_SECRET_FORGOT_PASSWORD_TOKEN as string
-// 							})
-// 							const { user_id } = decoded_forgot_password_token
-// 							const user = await databaseService.users.findOne({
-// 								_id: new ObjectId(user_id)
-// 							})
-// 							if (user === null) {
-// 								throw new ErrorWithStatus({
-// 									message: USERS_MESSAGES.USER_NOT_FOUND,
-// 									status: HTTP_STATUS.UNAUTHORIZED
-// 								})
-// 							}
-// 							if (user.forgot_password_token !== value) {
-// 								throw new ErrorWithStatus({
-// 									message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_INVALID,
-// 									status: HTTP_STATUS.UNAUTHORIZED
-// 								})
-// 							}
-// 							;(req as Request).decoded_forgot_password_token = decoded_forgot_password_token
-// 						} catch (error) {
-// 							if (error instanceof JsonWebTokenError) {
-// 								throw new ErrorWithStatus({
-// 									message: capitalize(error.message),
-// 									status: HTTP_STATUS.UNAUTHORIZED
-// 								})
-// 							}
-// 							throw error
-// 						}
-// 						return true
-// 					}
-// 				}
-// 			},
-// 			password: {
-// 				notEmpty: {
-// 					errorMessage: USERS_MESSAGES.PASSWORD_IS_REQUIRED
-// 				},
-// 				isString: {
-// 					errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING
-// 				},
-// 				isLength: {
-// 					options: {
-// 						min: 8,
-// 						max: 50
-// 					},
-// 					errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_8_TO_50
-// 				},
-// 				trim: true,
-// 				isStrongPassword: {
-// 					options: {
-// 						minLength: 8,
-// 						minLowercase: 1,
-// 						minSymbols: 1,
-// 						minUppercase: 1
-// 					},
-// 					errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG
-// 				}
-// 			},
-// 			confirmPassword: {
-// 				notEmpty: {
-// 					errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED
-// 				},
-// 				isString: {
-// 					errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING
-// 				},
-// 				isLength: {
-// 					options: {
-// 						min: 8,
-// 						max: 50
-// 					},
-// 					errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_LENGTH_MUST_BE_FROM_8_TO_50
-// 				},
-// 				trim: true,
-// 				isStrongPassword: {
-// 					options: {
-// 						minLength: 8,
-// 						minLowercase: 1,
-// 						minSymbols: 1,
-// 						minUppercase: 1
-// 					},
-// 					errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_STRONG
-// 				},
-// 				custom: {
-// 					options: (value, { req }) => {
-// 						if (value !== req.body.password) {
-// 							throw new Error('Confirm password phai giong voi pass word')
-// 						}
-// 						return true
-// 					},
-// 					errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_NOT_DIFFERENT_FROM_PASSWORD
-// 				}
-// 			}
-// 		},
-// 		['body']
-// 	)
-// )
+						return true
+					}
+				}
+			},
+			level: {
+				notEmpty: {
+					errorMessage: USERS_MESSAGES.LEVEL_IS_REQUIRED
+				},
+				isString: {
+					errorMessage: USERS_MESSAGES.LEVEL_MUST_BE_A_STRING
+				},
+				trim: true,
+				isIn: {
+					options: [['N1', 'N2', 'N3', 'N4', 'N5']],
+					errorMessage: 'Level must be one of: N1, N2, N3, N4, N5'
+				}
+			}
+		},
+		['query']
+	)
+)

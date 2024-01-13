@@ -9,6 +9,7 @@ databaseService.connect()
 
 app.use(express.static('public'))
 app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/', usersRouter)
 app.use(defaultErrorHandler)

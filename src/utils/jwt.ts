@@ -1,9 +1,5 @@
-import { ifError } from 'assert'
-import { error } from 'console'
 import { config } from 'dotenv'
 import jwt, { Jwt, JwtPayload } from 'jsonwebtoken'
-import { reject } from 'lodash'
-import { resolve } from 'path'
 import { TokenPayLoad } from '~/models/request/User.requests'
 config()
 
