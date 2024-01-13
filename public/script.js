@@ -77,19 +77,19 @@ function handleFunction() {
 			  <div class="choices">
 				<label>
 				  <input type="radio" name="answer_${index}" value="choice_1">
-				  ${question.choices.choice_1}
+				  ${question.choices.A}
 				</label>
 				<label>
 				  <input type="radio" name="answer_${index}" value="choice_2">
-				  ${question.choices.choice_2}
+				  ${question.choices.B}
 				</label>
 				<label>
 				  <input type="radio" name="answer_${index}" value="choice_3">
-				  ${question.choices.choice_3}
+				  ${question.choices.C}
 				</label>
 				<label>
 				  <input type="radio" name="answer_${index}" value="choice_4">
-				  ${question.choices.choice_4}
+				  ${question.choices.D}
 				</label>
 			  </div>
 			</div>
@@ -110,16 +110,16 @@ function handleFunction() {
 			e.preventDefault()
 			answers.forEach(function (answer, index) {
 				switch (answer) {
-					case 1:
+					case 'A':
 						var answer_$ = 'A'
 						break
-					case 2:
+					case 'B':
 						var answer_$ = 'B'
 						break
-					case 3:
+					case 'C':
 						var answer_$ = 'C'
 						break
-					case 4:
+					case 'D':
 						var answer_$ = 'D'
 						break
 					default:

@@ -313,10 +313,10 @@ export const quizReqValidator = validate(
 				trim: true,
 				custom: {
 					options: async (value, { req }) => {
-						const isNonNegative = parseInt(value, 10) >= 0
+						const isNonNegative = parseInt(value, 10) >= 1
 
 						if (!isNonNegative) {
-							throw new Error('Number of quiz must be positive')
+							throw new Error('Number of quiz must be larger than 0')
 						}
 
 						return true

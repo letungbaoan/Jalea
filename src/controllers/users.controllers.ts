@@ -59,20 +59,20 @@ export const quizController = async (req: Request<ParamsDictionary, any, any>, r
             {
               "question": "Question 1?",
               "choices": {
-                "choice_1": "Option 1",
-                "choice_2": "Option 2",
-                "choice_3": "Option 3",
-                "choice_4": "Option 4"
+                "A": "Option 1",
+                "B": "Option 2",
+                "C": "Option 3",
+                "D": "Option 4"
               },
               "answer": X
             },
             {
               "question": "Question 2?",
               "choices": {
-                "choice_1": "Option 1",
-                "choice_2": "Option 2",
-                "choice_3": "Option 3",
-                "choice_4": "Option 4"
+                "A": "Option 1",
+                "B": "Option 2",
+                "C": "Option 3",
+                "D": "Option 4"
               },
               "answer": X
             },
