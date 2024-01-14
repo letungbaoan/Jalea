@@ -15,6 +15,10 @@ Customize your learning journey with our dynamic quiz generator. Set your prefer
 
 Follow these steps to run the project locally.
 
+### Configuration
+
+This project requires a `.env` file for sensitive information such as API keys or database access credentials. However, this file is not included in the GitHub repository for security reasons, so the `env` is in zipped file.
+
 ### Step 1: Install Dependencies
 
 Run the following command in your terminal to install the required dependencies.
