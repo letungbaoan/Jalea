@@ -48,8 +48,8 @@ $(document).ready(function () {
 			data: data,
 			success: function (response) {
 				console.log(response)
-				$('.modal').css('display','none')
-				$('#logoutBtn').css('display','block')
+				$('.modal').css('display', 'none')
+				$('#logoutBtn').css('display', 'block')
 				//Hiện thông báo đăng nhập thành công
 			},
 			error: function (error) {
@@ -59,7 +59,7 @@ $(document).ready(function () {
 		})
 	})
 	//Logout
-	$('#logoutBtn').click(function(e) {
+	$('#logoutBtn').click(function (e) {
 		location.reload()
 	})
 })
@@ -198,52 +198,7 @@ function handleFunction() {
 	//Explain sentence
 	function buildExplainForm(data) {
 		var explainData = data.result.choices[0].message.content
-
-		function typeWriter(container, text, typingDelay) {
-			var words = text.split(' ')
-			var currentLine = ''
-			var outputText = ''
-
-			$.each(words, function (index, word) {
-				var newLine = currentLine + word + ' '
-
-				if ($(container).text(newLine).width() > $(container).width()) {
-					outputText += currentLine.trim() + '<br>'
-					currentLine = ''
-				}
-
-				currentLine += word + ' '
-			})
-
-			outputText += currentLine.trim()
-
-			var charIndex = 0
-
-			function type() {
-				if (charIndex < outputText.length) {
-					var currentChar = outputText[charIndex]
-
-					var charElement = $('<span>').addClass('word').text(currentChar)
-					$(container).append(charElement)
-
-					var isLineBreak = currentChar === '<'
-
-					if (isLineBreak) {
-						$(container).append($('<br>').addClass('line-break'))
-					}
-
-					charIndex++
-					var randomTypingDelay = typingDelay + Math.random() * 100 // Thêm độ trễ ngẫu nhiên
-					setTimeout(type, randomTypingDelay)
-				}
-			}
-
-			type()
-		}
-		const targetElement = $('#result')
-		const textToType = explainData
-		const typingDelay = 20
-		typeWriter(targetElement, textToType, typingDelay)
+		$('#result').text(explainData)
 	}
 
 	$('#typing_sentence').keypress(function (e) {

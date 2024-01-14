@@ -108,22 +108,20 @@ export const explainSentenceController = async (req: Request<ParamsDictionary, a
 			Explanation:
 			  Structure:
 	  
-				Topic: Identify the main subject or theme of the sentence. This helps establish the primary focus.
-				Action or Characteristic: Describe the primary action or characteristic conveyed by the sentence.
-				Clauses: Analyze the sentence's main and subordinate clauses to understand its syntactic structure.
-			  Grammar:
+				Topic: Identify the main subject or theme of the sentence. This helps establish the primary focus.\n
+				Action or Characteristic: Describe the primary action or characteristic conveyed by the sentence.\n
+				Clauses: Analyze the sentence's main and subordinate clauses to understand its syntactic structure.\n
+			  Grammar:\n\n
 	  
-				Used: Specify the key grammar structure employed in the sentence, such as a specific particle or tense.
-				Meaning: Describe the intended meaning of the identified grammar structure in the context of the sentence.
-				Examples: Provide illustrative examples showcasing how the grammar is applied in the sentence.
-				Comparison: Compare the identified grammar with at least one similar structure, highlighting differences in meaning.
-			  Analysis:
+				Used: Specify the key grammar structure employed in the sentence, such as a specific particle or tense.\n
+				Meaning: Describe the intended meaning of the identified grammar structure in the context of the sentence.\n
+				Examples: Provide illustrative examples showcasing how the grammar is applied in the sentence.\n
+				Comparison: Compare the identified grammar with at least one similar structure, highlighting differences in meaning.\n
+			  Analysis:\n\n
 	  
-				Choice Reason: Pose questions to explore the rationale behind choosing the specific grammar structure. Consider factors like nuance or emphasis.
-				Context and Usage: Investigate the communicative context and usage situations in which the grammar is employed. This helps understand pragmatic choices.
-				Comparison with Other Cases: Compare the usage of the identified grammar with other instances to suggest variations in its application, considering diverse contexts.
-			   
-				This enhanced prompt aims to provide more detailed guidance for the analysis of a Japanese sentence. Feel free to use this version for more specific and nuanced results.                `
+				Choice Reason: Pose questions to explore the rationale behind choosing the specific grammar structure. Consider factors like nuance or emphasis.\n
+				Context and Usage: Investigate the communicative context and usage situations in which the grammar is employed. This helps understand pragmatic choices.\n
+				Comparison with Other Cases: Compare the usage of the identified grammar with other instances to suggest variations in its application, considering diverse contexts.`
 		}
 	]
 	console.log(messages)
