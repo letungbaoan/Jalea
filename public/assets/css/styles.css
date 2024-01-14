@@ -100,6 +100,19 @@ ul {
 	width: 100%;
 }
 
+#logoutBtn {
+    text-align: center;
+    position: absolute;
+    bottom: 4%;
+    left: 40%;
+    display: none;
+}
+
+#logoutBtn:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 /* Function 1 */
 #func1 {
 	text-align: center;
@@ -448,9 +461,6 @@ input[type='radio'] {
 	color: var(--primary-color);
 	font-weight: 400;
 	cursor: pointer;
-}
-
-.auth-form__form {
 }
 
 .auth-form__input {

@@ -104,45 +104,26 @@ export const explainSentenceController = async (req: Request<ParamsDictionary, a
 		{
 			role: 'user',
 			content: `
-        Perform an in-depth analysis of a given Japanese sentence '${sentence}', and present the findings in a well-organized JSON format with the following detailed structure:
-    
-        {
-          "structure": {
-            "topic": "",
-            "action_or_characteristic": "",
-            "clauses": ""
-          },
-          "grammar": {
-            "used": "",
-            "meaning": "",
-            "examples": "",
-            "comparison": ""
-          },
-          "analysis": {
-            "choice_reason": "",
-            "context_and_usage": "",
-            "comparison_with_other_cases": ""
-          }
-        }
-        Explanation:
-          Structure:
-  
-            Topic: Identify the main subject or theme of the sentence. This helps establish the primary focus.
-            Action or Characteristic: Describe the primary action or characteristic conveyed by the sentence.
-            Clauses: Analyze the sentence's main and subordinate clauses to understand its syntactic structure.
-          Grammar:
-  
-            Used: Specify the key grammar structure employed in the sentence, such as a specific particle or tense.
-            Meaning: Describe the intended meaning of the identified grammar structure in the context of the sentence.
-            Examples: Provide illustrative examples showcasing how the grammar is applied in the sentence.
-            Comparison: Compare the identified grammar with at least one similar structure, highlighting differences in meaning.
-          Analysis:
-  
-            Choice Reason: Pose questions to explore the rationale behind choosing the specific grammar structure. Consider factors like nuance or emphasis.
-            Context and Usage: Investigate the communicative context and usage situations in which the grammar is employed. This helps understand pragmatic choices.
-            Comparison with Other Cases: Compare the usage of the identified grammar with other instances to suggest variations in its application, considering diverse contexts.
-           
-            This enhanced prompt aims to provide more detailed guidance for the analysis of a Japanese sentence. Feel free to use this version for more specific and nuanced results.                `
+			Perform an in-depth analysis of a given Japanese sentence '${sentence}'.
+			Explanation:
+			  Structure:
+	  
+				Topic: Identify the main subject or theme of the sentence. This helps establish the primary focus.
+				Action or Characteristic: Describe the primary action or characteristic conveyed by the sentence.
+				Clauses: Analyze the sentence's main and subordinate clauses to understand its syntactic structure.
+			  Grammar:
+	  
+				Used: Specify the key grammar structure employed in the sentence, such as a specific particle or tense.
+				Meaning: Describe the intended meaning of the identified grammar structure in the context of the sentence.
+				Examples: Provide illustrative examples showcasing how the grammar is applied in the sentence.
+				Comparison: Compare the identified grammar with at least one similar structure, highlighting differences in meaning.
+			  Analysis:
+	  
+				Choice Reason: Pose questions to explore the rationale behind choosing the specific grammar structure. Consider factors like nuance or emphasis.
+				Context and Usage: Investigate the communicative context and usage situations in which the grammar is employed. This helps understand pragmatic choices.
+				Comparison with Other Cases: Compare the usage of the identified grammar with other instances to suggest variations in its application, considering diverse contexts.
+			   
+				This enhanced prompt aims to provide more detailed guidance for the analysis of a Japanese sentence. Feel free to use this version for more specific and nuanced results.                `
 		}
 	]
 	console.log(messages)
@@ -152,12 +133,12 @@ export const explainSentenceController = async (req: Request<ParamsDictionary, a
 	const deploymentId = 'GPT35TURBO16K'
 	const result = await client.getChatCompletions(deploymentId, messages)
 
-	const str = result.choices![0]!.message!.content
-	const obj = JSON.parse(str as string)
-	console.log(obj)
+	for (const choice of result.choices) {
+		console.log(choice.message)
+	}
 
 	return res.status(200).json({
 		message: USERS_MESSAGES.GET_COMPLETIONS_SUCCESS,
-		result: obj
+		result
 	})
 }

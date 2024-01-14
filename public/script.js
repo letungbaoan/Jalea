@@ -48,7 +48,8 @@ $(document).ready(function () {
 			data: data,
 			success: function (response) {
 				console.log(response)
-				$('.modal').css('display', 'none')
+				$('.modal').css('display','none')
+				$('#logoutBtn').css('display','block')
 				//Hiện thông báo đăng nhập thành công
 			},
 			error: function (error) {
@@ -56,6 +57,10 @@ $(document).ready(function () {
 				//Hiện thông báo sai tài khoản hoặc mật khẩu
 			}
 		})
+	})
+	//Logout
+	$('#logoutBtn').click(function(e) {
+		location.reload()
 	})
 })
 
